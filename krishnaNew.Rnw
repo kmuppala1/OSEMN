@@ -1,0 +1,122 @@
+\documentclass{article}
+
+\begin{document}
+
+<<>>=
+
+@
+    
+    {\fontsize{24}{4}\selectfont Overview}
+    
+    Richard M. Schulze and Gary Smoliak founded an audio speciality store in 1966. They renamed it in 1983 for more emphasis on consumer electronics. Later it became an American multinational consumer electronis corporation. Best buy was headquartered in Richfield, Minnesota. It operates in Puerto Rico, Mexico, Canada and China. Hubert Joly serves as Best Buy president and CEO.  
+
+    Best Buy Co., Inc. was ranked in the Top 10 of "America's Most Generous Corporations" by Forbes in 2005. 
+ 
+
+<<abc,echo=TRUE,warning=FALSE, error = TRUE>>=
+
+library(jsonlite)
+library (plyr)
+
+url  <- 'http://api.remix.bestbuy.com/'   # the Best Buy API
+path <- 'v1/reviews'                      # Reviews path
+search <- '(sku=7623383|sku=7643078)'     # SKU's for iPhone 6 Plus and iPhone 5C
+format <- '?format=json&'                 # Results will be in json format
+key <- 'apiKey=ztk9ycxpg6rcmu9wfbq7gqe9&' # here is my key
+                                          # get your own at:
+                                          # https://developer.bestbuy.com/documentation/reviews-api
+                                          # Select 'Get API Key' in top right hand corner
+fields <- 'show=id,sku,rating&'           # I only want these fields
+pageSize <- 'pageSize=100'                # 100 results per page is the max allowed
+
+# Paste0 allows me to concatenate all of the above into one long URL
+URLall <-paste0(url, path, search, format, key, fields, pageSize)
+
+#Here is what it looks like all together
+# The above URL will create a page in json format
+# I can read the json and convert it to a list using the jsonlite package
+l = jsonlite::fromJSON(URLall)
+# If I look at l, I see that 
+# My search yielded 7291  total records over 73 total pages
+# But the the API only returned 100 records (100 is the max per page) 
+
+head(l)
+
+# to get all 403 records, I will need to access pages 1-5
+# if you look at the documentation for the api:
+# https://developer.bestbuy.com/documentation#pagination-pagination
+# you will see that you can specify the page you want
+
+pageText <- '&page=' # i will be the page number
+
+# r allows many types of loops - including a for loop
+
+for (i in  1:73)
+{
+  URLpage <-paste0(URLall, pageText, i)
+
+  l = jsonlite::fromJSON(URLpage)
+  
+  # The ldply function in the plyr package allows us 
+  #  to convert our list (l) to a dataframe (df)
+  dfnew <- ldply (l, data.frame)
+  
+  # the first 9 rows are unneeded header information
+  # the first 10 columns are unneeded header information
+  # we will drop both the unneeded columns and rows
+  dfnew<-dfnew[-c(1:9),-c(1:10)]
+  
+  # we will write each page out to a text file
+  # each page will be appended to the bestbuy.csv file
+  write.table(dfnew, file="bestbuy.csv", col.names=F, row.names=F, append=T, sep=",")
+  # ignore the warning messages
+}
+
+# Now we can read in the complete set of page data
+iphone.data <-read.csv("bestbuy.csv", header = F)
+
+# Since we set col.names=F above, we need to name our columns
+iphone.data<-rename(iphone.data,c(V1="ID", V2="SKU", V3 = "Rating"))
+# now, our data is ready to analyse
+
+#Scrubbung the Data
+h1_iphonedata<-iphone.data[grep(7623383,iphone.data$SKU),]
+h2_iphonedata<-iphone.data[grep(7643078,iphone.data$SKU),]
+
+mean_h1_iphonedata<-mean(h1_iphonedata$Rating,) 
+mean_h2_iphonedata<-mean(h2_iphonedata$Rating,)
+mean_h1_iphonedata
+mean_h2_iphonedata
+class(mean_h1_iphonedata)
+summary(mean_h1_iphonedata)
+class(mean_h2_iphonedata)
+summary(mean_h2_iphonedata)
+
+#Creating graph
+install.packages('plotrix')
+library(plotrix)
+df1<- c ("6+","5C")
+df2<- c(4.747573,4.7)
+colors<-c("blue","red")
+pie3D(df2, labels=df1, col=colors, main="iPhone Ratings")
+
+library(ggplot2)
+iphone.memory<-c("6+","5C")
+ratings=c(4.747573,4.7)
+dfg <- data.frame(iPhone = factor(df1, levels = df1), Ratings = df2)
+ggplot(data=dfg, aes(x=iPhone, y=Ratings,fill=iPhone)) + geom_bar(stat = "identity") +ggtitle("iPhone Rating Comparison")
+@
+
+RESULTS
+
+The bar graph shows the mean value of the ratings given for iPhone 6 Plus and iPhone 5C, which has the screen size of 5.5 inch and 4 inch respectively.
+
+The pie graph shows the percentage of the iPhone's ratings with two different screen sizes.
+
+From both the graphs it is concluded that the iPhone with larger screen size has better ratings.
+
+
+
+
+
+\end{document}

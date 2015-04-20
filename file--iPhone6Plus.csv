@@ -1,0 +1,11 @@
+"","from","to","total","currentPage","totalPages","queryTime","totalTime","partial","canonicalUrl","rating"
+"1",1,10,102,1,11,"0.003","0.008",FALSE,"/v1/reviews(sku=7623383)?show=rating&format=json&apiKey=e5rfu7vtshnqqxfrtsmnefqm",5
+"2",1,10,102,1,11,"0.003","0.008",FALSE,"/v1/reviews(sku=7623383)?show=rating&format=json&apiKey=e5rfu7vtshnqqxfrtsmnefqm",5
+"3",1,10,102,1,11,"0.003","0.008",FALSE,"/v1/reviews(sku=7623383)?show=rating&format=json&apiKey=e5rfu7vtshnqqxfrtsmnefqm",5
+"4",1,10,102,1,11,"0.003","0.008",FALSE,"/v1/reviews(sku=7623383)?show=rating&format=json&apiKey=e5rfu7vtshnqqxfrtsmnefqm",5
+"5",1,10,102,1,11,"0.003","0.008",FALSE,"/v1/reviews(sku=7623383)?show=rating&format=json&apiKey=e5rfu7vtshnqqxfrtsmnefqm",5
+"6",1,10,102,1,11,"0.003","0.008",FALSE,"/v1/reviews(sku=7623383)?show=rating&format=json&apiKey=e5rfu7vtshnqqxfrtsmnefqm",5
+"7",1,10,102,1,11,"0.003","0.008",FALSE,"/v1/reviews(sku=7623383)?show=rating&format=json&apiKey=e5rfu7vtshnqqxfrtsmnefqm",5
+"8",1,10,102,1,11,"0.003","0.008",FALSE,"/v1/reviews(sku=7623383)?show=rating&format=json&apiKey=e5rfu7vtshnqqxfrtsmnefqm",5
+"9",1,10,102,1,11,"0.003","0.008",FALSE,"/v1/reviews(sku=7623383)?show=rating&format=json&apiKey=e5rfu7vtshnqqxfrtsmnefqm",5
+"10",1,10,102,1,11,"0.003","0.008",FALSE,"/v1/reviews(sku=7623383)?show=rating&format=json&apiKey=e5rfu7vtshnqqxfrtsmnefqm",5
